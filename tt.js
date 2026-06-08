@@ -1,12 +1,12 @@
 //TT.js is the IneTTerm native javascript library for working with IneTTerm.
-let cX = 0
-let cY = 0
+let cX = 0;
+let cY = 0;
 
 function draw() {
     for (let y = 0; y < 24; y++) {
         for (let x = 0; x < 80; x++) {
-            let data = buffer[y][x]
-            let cell = cells[y][x]
+            let data = buffer[y][x];
+            let cell = cells[y][x];
 
             cell.textContent = data.char;
 
@@ -38,4 +38,4 @@ function print(toprint) {
 
 //testing
 print("Hello, world!");
-print("Gosh, i love printing!")
+print("Gosh, i love printing!");
