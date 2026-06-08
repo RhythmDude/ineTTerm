@@ -1,5 +1,5 @@
-const term = document.getElementById('terminal');
-const cells = [];
+let term = document.getElementById('terminal');
+let cells = [];
 
 let buffer = []
 
