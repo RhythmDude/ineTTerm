@@ -68,13 +68,21 @@ function input(prompt = "") {
         inputEl.type = "text";
         inputEl.style.position = "absolute";
         inputEl.style.left = "-9999px";
+        inputEl.style.top = "0";
+        inputEl.style.width = "1px";
+        inputEl.style.height = "1px";
+        inputEl.style.opacity = "0";
         inputEl.autocomplete = "off";
         inputEl.spellcheck = false;
+        inputEl.style.zIndex = "-1";
 
         document.body.appendChild(inputEl);
-        inputEl.focus();
+        inputEl.focus({preventScroll: true});
 
-        function updateDisplay() {
+        let needsDraw = false;
+
+        function renderLine() {
+            needsDraw = false;
             const line = prompt + inputEl.value;
             for (let x = 0; x < cols; x++) {
                 buffer[cY][x].char = " ";
@@ -85,9 +93,24 @@ function input(prompt = "") {
             draw();
         }
 
+        function scheduleRender() {
+            if (!needsDraw) {
+                needsDraw = true;
+                requestAnimationFrame(renderLine);
+            }
+        }
+
+        function ensureFocus() {
+            if (document.activeElement !== inputEl) {
+                inputEl.focus({preventScroll: true});
+            }
+        }
+
         function cleanup() {
-            inputEl.removeEventListener("input", updateDisplay);
+            inputEl.removeEventListener("input", scheduleRender);
             inputEl.removeEventListener("keydown", onKeyDown);
+            inputEl.removeEventListener("blur", onBlur);
+            document.removeEventListener("mousedown", onMouseDown);
             document.body.removeChild(inputEl);
         }
 
@@ -102,9 +125,19 @@ function input(prompt = "") {
             }
         }
 
-        inputEl.addEventListener("input", updateDisplay);
+        function onBlur() {
+            setTimeout(ensureFocus, 0);
+        }
+
+        function onMouseDown() {
+            setTimeout(ensureFocus, 0);
+        }
+
+        inputEl.addEventListener("input", scheduleRender);
         inputEl.addEventListener("keydown", onKeyDown);
-        updateDisplay();
+        inputEl.addEventListener("blur", onBlur);
+        document.addEventListener("mousedown", onMouseDown);
+        scheduleRender();
     });
 }
 
