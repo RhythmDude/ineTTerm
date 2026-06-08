@@ -40,15 +40,48 @@ function print(toprint) {
     cY++;
 }
 
-window.addEventListener('resize', () => {
-    const cols = Math.floor(window.innerWidth / charWidth);
-    const rows = Math.floor(window.innerHeight / charHeight);
+function reinitializeGrid() {
+    cols = Math.floor(window.innerWidth / charWidth);
+    rows = Math.floor(window.innerHeight / charHeight);
+
+    // Clear old cells
+    term.innerHTML = '';
+    cells = [];
+
+    // Reinitialize buffer
+    buffer = [];
+    for (let i = 0; i < rows; i++) {
+        buffer.push([]);
+        for (let j = 0; j < cols; j++) {
+            buffer[i].push({
+                char: " ",
+                fg: "#FFFFFF",
+                bg: "#000000",
+                flags: {bold: false, faint: false, italic: false, underline: false, inverse: false, invisible: false}
+            });
+        }
+    }
+
+    // Recreate cells
+    for (let y = 0; y < rows; y++) {
+        cells.push([]);
+        for (let x = 0; x < cols; x++) {
+            const cell = document.createElement("span");
+            cell.textContent = "\u00A0";
+            term.appendChild(cell);
+            cells[y].push(cell);
+        }
+    }
 
     term.style.gridTemplateColumns = `repeat(${cols}, 1ch)`;
     term.style.gridTemplateRows = `repeat(${rows}, 1.2em)`;
     
+    cX = 0;
+    cY = 0;
     draw();
-});
+}
+
+window.addEventListener('resize', reinitializeGrid);
 
 
 //testing
