@@ -26,7 +26,7 @@ function draw() {
 
 function print(toprint) {
     const length = toprint.length;
-    const characters = toprint.split("");
+    const characters = toprint.replace(" ", "\u00A0").split("");
 
     for (let i = 0; i < length; i++) {
         buffer[cY][cX + i].char = characters[i];

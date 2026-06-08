@@ -21,7 +21,7 @@ for (let y = 0; y < 24; y++) {
     for (let x = 0; x < 80; x++) {
         const cell = document.createElement("span");
         
-        cell.textContent = " ";
+        cell.textContent = "\u0A00";
 
         term.appendChild(cell);
         cells[y].push(cell);
