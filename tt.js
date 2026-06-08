@@ -7,8 +7,12 @@ function draw() {
         for (let x = 0; x < 80; x++) {
             const data = buffer[y][x];
             const cell = cells[y][x];
-
+            
+            if (data.char == " ") {
+                cell.textContent = "\u0A00"
+            } else {
             cell.textContent = data.char;
+            }
 
             cell.style.color = data.fg;
             cell.style.backgroundColor = data.bg;
@@ -26,7 +30,7 @@ function draw() {
 
 function print(toprint) {
     const length = toprint.length;
-    const characters = toprint.replace(" ", "\u00A0").split("");
+    const characters = toprint.split("");
 
     for (let i = 0; i < length; i++) {
         buffer[cY][cX + i].char = characters[i];
