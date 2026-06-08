@@ -12,14 +12,10 @@ html, body {
     font-family: "Cascadia Mono", "Consolas", monospace;
     font-size: 16px;
     line-height: 1.2em;
-
-    white-space: pre;
 }
 
 #terminal span {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    white-space: pre;
 }
