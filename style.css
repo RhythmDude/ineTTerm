@@ -8,9 +8,16 @@ html, body {
     display: grid;
     grid-template-columns: repeat(80, 1ch);
     grid-template-rows: repeat(24, 1.2em);
-    font-family: monospace;
+
+    font-family: "Cascadia Mono", "Consolas", monospace;
     font-size: 16px;
-    color: #00FF00;
     line-height: 1.2em;
-    padding: 10px;
+
+    white-space: pre;
+}
+
+#terminal span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
