@@ -4,8 +4,8 @@ let cells = [];
 const charWidth = 9.6; // Width of one character in pixels (1ch ≈ 9.6px at 16px font size)
 const charHeight = 19.2; // Height of one line in pixels (1.2em ≈ 19.2px)
 
-const cols = Math.floor(window.innerWidth / charWidth);
-const rows = Math.floor(window.innerHeight / charHeight);
+let cols = Math.floor(window.innerWidth / charWidth);
+let rows = Math.floor(window.innerHeight / charHeight);
 
 term.style.gridTemplateColumns = `repeat(${cols}, 1ch)`
 term.style.gridTemplateRows = `repeat(${rows}, 1.2em)`
