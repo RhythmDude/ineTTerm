@@ -1,11 +1,18 @@
 let term = document.getElementById('terminal');
 let cells = [];
 
+const cols = Math.floor(window.innerWidth / charWidth);
+const rows = Math.floor(window.innerHeight / charHeight);
+
+term.style.gridTemplateColumns = `repeat(${cols}, 1ch)`
+term.style.gridTemplateRows = `repeat(${rows}, 1.2em)`
+
+
 let buffer = []
 
-for (let i = 0; i < 24; i++) {
+for (let i = 0; i < rows; i++) {
     buffer.push([])
-    for (let j = 0; j < 80; j++) {
+    for (let j = 0; j < cols; j++) {
         buffer[i].push({// Each character contains an array: The character, color, bg color, then formatting property flags
             char: " ",
             fg: "#FFFFFF",
@@ -15,13 +22,13 @@ for (let i = 0; i < 24; i++) {
     }
 }
 
-for (let y = 0; y < 24; y++) {
+for (let y = 0; y < rows; y++) {
     cells.push([]);
 
-    for (let x = 0; x < 80; x++) {
+    for (let x = 0; x < cols; x++) {
         const cell = document.createElement("span");
         
-        cell.textContent = "\u0A00";
+        cell.textContent = "\u00A0";
 
         term.appendChild(cell);
         cells[y].push(cell);

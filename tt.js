@@ -3,13 +3,13 @@ let cX = 0;
 let cY = 0;
 
 function draw() {
-    for (let y = 0; y < 24; y++) {
-        for (let x = 0; x < 80; x++) {
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
             const data = buffer[y][x];
             const cell = cells[y][x];
             
             if (data.char == " ") {
-                cell.textContent = "\u0A00"
+                cell.textContent = "\u00A0"
             } else {
             cell.textContent = data.char;
             }
@@ -39,6 +39,17 @@ function print(toprint) {
     draw();
     cY++;
 }
+
+window.addEventListener('resize', () => {
+    const cols = Math.floor(window.innerWidth / charWidth);
+    const rows = Math.floor(window.innerHeight / charHeight);
+
+    term.style.gridTemplateColumns = `repeat(${cols}, 1ch)`;
+    term.style.gridTemplateRows = `repeat(${rows}, 1.2em)`;
+    
+    draw();
+});
+
 
 //testing
 print("Hello, world!");
