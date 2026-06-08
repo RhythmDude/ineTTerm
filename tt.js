@@ -5,8 +5,8 @@ let cY = 0
 function draw() {
     for (let y = 0; y < 24; y++) {
         for (let x = 0; x < 80; x++) {
-            const data = buffer[y][x]
-            const cell = cells[y][x]
+            let data = buffer[y][x]
+            let cell = cells[y][x]
 
             cell.textContent = data.char;
 
@@ -25,8 +25,8 @@ function draw() {
 }
 
 function print(toprint) {
-    const length = toprint.length;
-    const characters = toprint.split("");
+    let length = toprint.length;
+    let characters = toprint.split("");
 
     for (let i = 0; i < length; i++) {
         buffer[cY][cX + i].char = characters[i];
