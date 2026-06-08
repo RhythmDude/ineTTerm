@@ -1,18 +1,19 @@
 const term = document.getElementById('terminal');
 
-const ROWS = 24;
-const COLS = 80;
+buffer = []
 
-// Initialize buffer: 24 lines, each line is an array of 80 copies of the string "t"
-let buffer = Array.from({ length: ROWS }, () => Array.from({ length: COLS }, () => 't'));
-
-function draw() {
-  if (!term) return;
-  // Join each line's character strings into a single line, then join lines with newlines
-  term.textContent = buffer.map(line => line.join('')).join('\n');
+for (i = 0; i < 24; i++) {
+    buffer.push([])
+    for (j = 0; j < 80; i++) {
+        buffer[i].push([// Each character contains an array: The character, color, bg color, then formatting property flags
+            " ",
+            "#FFFFFF",
+            "#000000",
+            {"bold": false, "faint": false, "italic": false, "underline": false, "inverse": false, "invisible": false}
+        ]); 
+    }
 }
 
-// Expose for debugging and manipulation from console
-window.terminalBuffer = { buffer, draw };
-
-draw();
+function draw() {
+    
+}
