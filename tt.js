@@ -1,6 +1,6 @@
 //TT.js is the IneTTerm native javascript library for working with IneTTerm.
-const cX = 0
-const cY = 0
+let cX = 0
+let cY = 0
 
 function draw() {
     for (let y = 0; y < 24; y++) {
@@ -31,7 +31,7 @@ function print(toprint) {
     for (let i = 0; i < length; i++) {
         buffer[cY][cX + i].char = characters[i];
     }
-    
+
     draw();
     cY++;
 }
