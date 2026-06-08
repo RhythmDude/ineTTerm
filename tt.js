@@ -28,16 +28,84 @@ function draw() {
     }
 }
 
-function print(toprint) {
-    const length = toprint.length;
-    const characters = toprint.split("");
+function print(toprint, end = "\n") {
+    const text = String(toprint);
+    const characters = text.split("");
 
-    for (let i = 0; i < length; i++) {
-        buffer[cY][cX + i].char = characters[i];
+    for (let i = 0; i < characters.length; i++) {
+        const x = cX + i;
+        if (x < cols) {
+            buffer[cY][x].char = characters[i];
+        }
     }
-    
+
+    cX += characters.length;
+
+    if (end === "\n") {
+        cY++;
+        cX = 0;
+    } else if (end) {
+        const suffix = String(end).split("");
+        for (let i = 0; i < suffix.length; i++) {
+            const x = cX + i;
+            if (x < cols) {
+                buffer[cY][x].char = suffix[i];
+            }
+        }
+        cX += suffix.length;
+    }
+
     draw();
-    cY++;
+}
+
+function input(prompt = "") {
+    if (prompt) {
+        print(prompt, "");
+    }
+
+    return new Promise((resolve) => {
+        const inputEl = document.createElement("input");
+        inputEl.type = "text";
+        inputEl.style.position = "absolute";
+        inputEl.style.left = "-9999px";
+        inputEl.autocomplete = "off";
+        inputEl.spellcheck = false;
+
+        document.body.appendChild(inputEl);
+        inputEl.focus();
+
+        function updateDisplay() {
+            const line = prompt + inputEl.value;
+            for (let x = 0; x < cols; x++) {
+                buffer[cY][x].char = " ";
+            }
+            for (let i = 0; i < line.length && i < cols; i++) {
+                buffer[cY][i].char = line[i];
+            }
+            draw();
+        }
+
+        function cleanup() {
+            inputEl.removeEventListener("input", updateDisplay);
+            inputEl.removeEventListener("keydown", onKeyDown);
+            document.body.removeChild(inputEl);
+        }
+
+        function onKeyDown(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                const result = inputEl.value;
+                cleanup();
+                cY++;
+                cX = 0;
+                resolve(result);
+            }
+        }
+
+        inputEl.addEventListener("input", updateDisplay);
+        inputEl.addEventListener("keydown", onKeyDown);
+        updateDisplay();
+    });
 }
 
 function reinitializeGrid() {
@@ -87,3 +155,4 @@ window.addEventListener('resize', reinitializeGrid);
 //testing
 print("Hello, world!");
 print("Gosh, i love printing!");
+input("Do you like printing too?: ");
