@@ -1,6 +1,6 @@
 const term = document.getElementById('terminal');
 
-buffer = []
+let buffer = []
 
 for (i = 0; i < 24; i++) {
     buffer.push([])
@@ -15,5 +15,5 @@ for (i = 0; i < 24; i++) {
 }
 
 function draw() {
-    
+
 }
