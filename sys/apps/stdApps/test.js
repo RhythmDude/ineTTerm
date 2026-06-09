@@ -1,4 +1,7 @@
 // test for tt.js terminal library and application integration into ineTTerm
 print("This is a print.");
-let inputTest = input("This is input: ");
+input("This is input: ").then((result) => {
+    let inputTest = result;
+})
+
 print("Your input was: " + inputTest);
