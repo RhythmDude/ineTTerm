@@ -57,11 +57,11 @@ function print(toprint, end = "\n") {
 }
 
 async function getEnv(key) {
-  return (await (await fetch("/sys/environment.json")).json())[key];
+  return (await (await fetch("sys/environment.json")).json())[key];
 }
 
 async function getJson(jsonPath) {
-  return await (await fetch(json)).json();
+  return await (await fetch(jsonPath)).json();
 }
 
 function input(prompt = "") {
@@ -142,9 +142,9 @@ function input(prompt = "") {
   });
 }
 
-function runApp(type, param) {
+async function runApp(type, param) {
   if (type === "byName") {
-    apps = getJson("/sys/applist.json");
+    const apps = await getJson("sys/applist.json");
     for (let i = 0; i < apps.length; i++) {
       if (apps[i].name === param) {
         runApp("byPath", apps[i].path);
