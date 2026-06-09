@@ -144,7 +144,8 @@ function input(prompt = "") {
 
 async function runApp(type, param) {
   if (type === "byName") {
-    const apps = await getJson("sys/apps/applist.json");
+    const appsJson = await getJson("sys/apps/applist.json");
+    const apps = appsJson.apps || appsJson;
     for (let i = 0; i < apps.length; i++) {
       if (apps[i].name === param) {
         runApp("byPath", apps[i].path);
