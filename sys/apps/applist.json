@@ -2,7 +2,7 @@
   "apps": [
     {
       "name": "Test",
-      "path": "sys/stdApps/test.js"
+      "path": "sys/apps/stdApps/test.js"
     }
   ]
 }

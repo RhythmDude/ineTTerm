@@ -56,6 +56,14 @@ function print(toprint, end = "\n") {
   draw();
 }
 
+async function getEnv(key) {
+  return (await (await fetch("/sys/environment.json")).json())[key];
+}
+
+async function getJson(jsonPath) {
+  return await (await fetch(json)).json();
+}
+
 function input(prompt = "") {
   if (prompt) {
     print(prompt, "");
@@ -134,6 +142,31 @@ function input(prompt = "") {
   });
 }
 
+function runApp(type, param) {
+  if (type === "byName") {
+    apps = getJson("/sys/applist.json");
+    for (let i = 0; i < apps.length; i++) {
+      if (apps[i].name === param) {
+        runApp("byPath", apps[i].path);
+        return;
+      }
+    }
+  } else if (type === "byPath") {
+    const app = document.createElement("script");
+    app.src = param;
+    app.type = "text/javascript";
+
+    app.onload = () => {
+      if (callback) callback();
+    };
+    app.onerror = () => {
+      print("Failed to load app: " + param);
+    };
+
+    document.body.appendChild(app);
+  }
+}
+
 function cursorGo(x, y) {
   cX = x;
   cY = y;
@@ -188,8 +221,3 @@ function reinitializeGrid() {
 }
 
 window.addEventListener("resize", reinitializeGrid);
-
-//testing
-print("Hello, world!");
-print("Gosh, i love printing!");
-input("Do you like printing too?: ");
