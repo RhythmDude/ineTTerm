@@ -1,0 +1,8 @@
+{
+  "apps": [
+    {
+      "name": "Test",
+      "path": "sys/stdApps/test.js"
+    }
+  ]
+}
