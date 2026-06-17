@@ -1,8 +1,16 @@
-getEnv("version").then((version) => {
-  print("IneTTerm web terminal environment " + version);
+async function boot() {
+  try {
+    const version = await getEnv("version");
+    print("IneTTerm web terminal environment " + version);
+  } catch (err) {
+    print("Failed to load environment: " + err);
+  }
 
-}).catch((err) => {
-  print("Failed to load environment: " + err);
-});
+  try {
+    await runApp("byName", "Test");
+  } catch (err) {
+    print("Failed to launch app: " + err);
+  }
+}
 
-runApp("byName", "Test");
+boot();
