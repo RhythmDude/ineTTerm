@@ -74,16 +74,22 @@ function savefs(fs) {
 }
 
 function loadfile(path) {
-    let dirparts = path.split("/");
-    let dirstring = "fs";
+    const fs = loadfs();
+    let node = fs;
+    const dirparts = path.split("/");
 
     for (let i = 0; i < dirparts.length; i++) {
+        const part = dirparts[i];
+        if (!node) {
+            return null;
+        }
+
         if (i === dirparts.length - 1) {
-            dirstring = dirstring + `["${dirparts[i]}"]`;
+            node = node[part];
         } else {
-            dirstring = dirstring + `["${dirparts[i]}"].children`;
+            node = node[part] && node[part].children;
         }
     }
 
-    return eval(dirstring);
+    return node;
 }
