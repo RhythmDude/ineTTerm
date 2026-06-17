@@ -1,1 +1,2 @@
-loadfs()
+loadfs();
+run("byName", "Test");
