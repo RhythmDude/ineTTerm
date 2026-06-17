@@ -5,12 +5,7 @@ async function boot() {
   } catch (err) {
     print("Failed to load environment: " + err);
   }
-
-  try {
-    await runApp("byName", "Test");
-  } catch (err) {
-    print("Failed to launch app: " + err);
-  }
+  runApp("byName", "Test");
 }
 
 boot();

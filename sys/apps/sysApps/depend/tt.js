@@ -72,8 +72,8 @@ function input(prompt = "") {
   return new Promise((resolve) => {
     const inputEl = document.createElement("input");
     inputEl.type = "text";
-    inputEl.style.position = "absolute";
-    inputEl.style.left = "-9999px";
+    inputEl.style.position = "fixed";
+    inputEl.style.left = "0";
     inputEl.style.top = "0";
     inputEl.style.width = "1px";
     inputEl.style.height = "1px";
@@ -85,10 +85,7 @@ function input(prompt = "") {
     document.body.appendChild(inputEl);
     inputEl.focus({ preventScroll: true });
 
-    let needsDraw = false;
-
     function renderLine() {
-      needsDraw = false;
       const line = prompt + inputEl.value;
       for (let x = 0; x < cols; x++) {
         buffer[cY][x].char = " ";
@@ -100,10 +97,7 @@ function input(prompt = "") {
     }
 
     function scheduleRender() {
-      if (!needsDraw) {
-        needsDraw = true;
-        requestAnimationFrame(renderLine);
-      }
+      renderLine();
     }
 
     function ensureFocus() {
