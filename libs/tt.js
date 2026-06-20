@@ -61,9 +61,9 @@ function inputBox(prompt) {
     return "";
 }
 
-function run(entry, to) {
+async function run(entry, to) {
     if (entry == "byName") {
-        const appsListFile = loadfile("rt/apps/applist.json");
+        const appsListFile = await loadfile("rt/apps/applist.json");
         if (!appsListFile || !appsListFile.content) {
             return;
         }
@@ -85,7 +85,7 @@ function run(entry, to) {
             return;
         }
 
-        const appFile = loadfile(app.path);
+        const appFile = await loadfile(app.path);
         if (appFile && appFile.content) {
             eval(appFile.content);
         }
