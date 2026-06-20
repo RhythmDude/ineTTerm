@@ -1,6 +1,16 @@
 function loadfs() {
     let fs = localStorage.getItem("filesystem");
 
+    if (fs !== null) {
+        try {
+            return JSON.parse(fs);
+        } catch (error) {
+            console.warn("Corrupt filesystem in localStorage, resetting.", error);
+            localStorage.removeItem("filesystem");
+            fs = null;
+        }
+    }
+
     if (fs === null) { // initialize tree
         fs = {
             "rt": {
