@@ -1,4 +1,12 @@
-function loadfs() {
+async function fetchFileContent(path) {
+    const response = await fetch(path);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch ${path}: ${response.status}`);
+    }
+    return await response.text();
+}
+
+async function loadfs() {
     let fsRaw = localStorage.getItem("filesystem");
 
     if (fsRaw === null) { // initialize tree
@@ -99,7 +107,7 @@ function savefs(fs) {
     localStorage.setItem("filesystem", JSON.stringify(fs));
 }
 
-function loadfile(path) {
+async function loadfile(path) {
     const fs = loadfs();
     let node = fs;
     const dirparts = path.split("/");

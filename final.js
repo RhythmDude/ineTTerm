@@ -1,5 +1,5 @@
-loadfs();
-const sysenv = loadfile("rt/sys/sysenv.json");
+await loadfs();
+const sysenv = await loadfile("rt/sys/sysenv.json");
 
 if (sysenv["debug_rfsob"]) {
     localStorage.removeItem('filesystem');
