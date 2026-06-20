@@ -1,9 +1,13 @@
 async function fetchFileContent(path) {
-    const response = await fetch(path);
-    if (!response.ok) {
-        throw new Error(`Failed to fetch ${path}: ${response.status}`);
+    try {
+        const response = await fetch(path);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return await response.text();
+    } catch (error) {
+        throw new Error(`Failed to fetch ${path}. Serve this folder over HTTP instead of opening index.html directly. ${error.message}`);
     }
-    return await response.text();
 }
 
 async function loadfs() {
@@ -108,7 +112,7 @@ function savefs(fs) {
 }
 
 async function loadfile(path) {
-    const fs = loadfs();
+    const fs = await loadfs();
     let node = fs;
     const dirparts = path.split("/");
 

@@ -1,7 +1,27 @@
 // the primary library for interacting with the terminal
 
-let cX = 1
-let cY = 0
+let cX = 0;
+let cY = 0;
+
+function blankCell() {
+    return {
+        char: " ",
+        fg: "#FFFFFF",
+        bg: "#000000",
+        flags: {bold: false, faint: false, italic: false, underline: false, inverse: false, invisible: false}
+    };
+}
+
+function newline() {
+    cX = 0;
+    cY++;
+
+    if (cY >= rows) {
+        buffer.shift();
+        buffer.push(Array.from({length: cols}, blankCell));
+        cY = rows - 1;
+    }
+}
 
 function draw() {
     for (let y = 0; y < rows; y++) {
@@ -29,11 +49,23 @@ function draw() {
 
 function print(string) {
     for (let i = 0; i < string.length; i++) {
-        const x = cX + i;
-        if (cY < 0 || cY >= rows || x < 0 || x >= cols) {
+        const char = string[i];
+
+        if (char === "\n") {
+            newline();
+            continue;
+        }
+
+        if (cX >= cols) {
+            newline();
+        }
+
+        if (cY < 0 || cY >= rows || cX < 0 || cX >= cols) {
             break;
         }
-        buffer[cY][x].char = string[i];
+
+        buffer[cY][cX].char = char;
+        cX++;
     } 
     draw();
 }
@@ -87,7 +119,8 @@ async function run(entry, to) {
 
         const appFile = await loadfile(app.path);
         if (appFile && appFile.content) {
-            eval(appFile.content);
+            const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+            await new AsyncFunction(appFile.content)();
         }
     }
 }

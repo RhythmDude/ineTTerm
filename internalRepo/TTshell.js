@@ -1,13 +1,12 @@
 print("IneTTerm shell");
-print("IneTTerm web terminal environment version " + sysenv["version"]);
+print("\nIneTTerm web terminal environment version " + sysenv["version"]);
 
-let user = loadfile("rt/sys/users.json")["user"];
+const usersFile = await loadfile("rt/sys/users.json");
+const users = JSON.parse(usersFile.content);
+let currentUser = "user";
+let user = users[currentUser];
 
-let prompt = Object.keys(user)[0]; + "~ ";
+let prompt = currentUser + "~ ";
 let args;
 
-while (true) { // shell loop
-    input = inputBox(prompt);
-    print(prompt + input);
-    args = input.split(" ");
-}
+print("\n" + prompt);
