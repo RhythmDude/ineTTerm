@@ -1,34 +1,6 @@
 function loadfs() {
     let fsRaw = localStorage.getItem("filesystem");
 
-    if (fsRaw !== null) {
-        try {
-            const fs = JSON.parse(fsRaw);
-            const appsNode = fs?.rt?.children?.apps?.children;
-            const appListNode = appsNode && appsNode["applist.json"];
-
-            if (appListNode && appListNode.content) {
-                try {
-                    JSON.parse(appListNode.content);
-                } catch (error) {
-                    console.warn("Repairing applist.json content in stored filesystem.", error);
-                    appListNode.content = `{
-                "Test": {
-                    "path": "rt/apps/usrApps/test.js"
-                }
-            }`;
-                    localStorage.setItem("filesystem", JSON.stringify(fs));
-                }
-            }
-
-            return fs;
-        } catch (error) {
-            console.warn("Corrupt filesystem in localStorage, resetting.", error);
-            localStorage.removeItem("filesystem");
-            fsRaw = null;
-        }
-    }
-
     if (fsRaw === null) { // initialize tree
         const fs = {
             "rt": {
@@ -70,14 +42,22 @@ function loadfs() {
             type: "file",
             group: "sys",
             content: `{
-                "version":"pre-alpha 1"
+                "version":"pre-alpha 1",
+                "debug_rfsob":true
             }`
         }
 
         fs["rt"].children["apps"].children["usrApps"].children["test.js"] = {
             type: "file",
             group: "usr",
-            content: `print("This is printing.");`
+            content: `print("This is printing.");
+            input("This is input")`
+        }
+
+        fs["rt"].children["apps"].children["sysApps"].children["TTshell.js"] = {
+            type: "file",
+            group: "sys",
+            content: /internalRepo/TTshell.js
         }
 
         fs["rt"].children["apps"].children["applist.json"] = {
@@ -86,8 +66,27 @@ function loadfs() {
             content: `{
                 "Test": {
                     "path": "rt/apps/usrApps/test.js"
+                },
+                "TTshell": {
+                    "path": "rt/apps/sysApps/TTshell.js
                 }
             }`
+        }
+
+        fs["rt"].children["sys"].children["users.json"] = {
+            type: "file",
+            group: "sys",
+            content: `{
+                "user": {
+                    "pass": "",
+                    "groups": ["usr"]
+                },
+                "root": {
+                    "pass": "",
+                    "groups": ["usr", "sys"]
+                }
+            }`,
+
         }
 
         localStorage.setItem("filesystem", JSON.stringify(fs));

@@ -38,6 +38,29 @@ function print(string) {
     draw();
 }
 
+function input(prompt = "") {
+    print(prompt);
+    return new Promise(resolve => {
+        inputResolve = resolve
+        inputBuffer = "";
+        inputMode = true;
+    });
+}
+
+// This is really just a temporary solution because actual in terminal input is pretty hard to make. PLEASE DONT USE THIS!
+function inputBox(prompt) {
+    if (prompt) {
+        print(prompt);
+    }
+    const response = window.prompt(prompt);
+    if (response !== null) {
+        print(response + "\n");
+        return response;
+    }
+    print("\n");
+    return "";
+}
+
 function run(entry, to) {
     if (entry == "byName") {
         const appsListFile = loadfile("rt/apps/applist.json");
