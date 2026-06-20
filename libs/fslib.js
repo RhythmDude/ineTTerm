@@ -57,7 +57,7 @@ function loadfs() {
         fs["rt"].children["apps"].children["sysApps"].children["TTshell.js"] = {
             type: "file",
             group: "sys",
-            content: /internalRepo/TTshell.js
+            content: await fetchFileContent("internalRepo/TTshell.js")
         }
 
         fs["rt"].children["apps"].children["applist.json"] = {
@@ -68,7 +68,7 @@ function loadfs() {
                     "path": "rt/apps/usrApps/test.js"
                 },
                 "TTshell": {
-                    "path": "rt/apps/sysApps/TTshell.js
+                    "path": "rt/apps/sysApps/TTshell.js"
                 }
             }`
         }
@@ -85,8 +85,7 @@ function loadfs() {
                     "pass": "",
                     "groups": ["usr", "sys"]
                 }
-            }`,
-
+            }`
         }
 
         localStorage.setItem("filesystem", JSON.stringify(fs));
