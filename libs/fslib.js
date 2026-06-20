@@ -57,7 +57,7 @@ function loadfs() {
             group: "sys",
             content: `{
                 "Test": {
-                    path: "rt/apps/usrApps/test.js"
+                    "path": "rt/apps/usrApps/test.js"
                 }
             }`
         }
