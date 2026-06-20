@@ -1,18 +1,36 @@
 function loadfs() {
-    let fs = localStorage.getItem("filesystem");
+    let fsRaw = localStorage.getItem("filesystem");
 
-    if (fs !== null) {
+    if (fsRaw !== null) {
         try {
-            return JSON.parse(fs);
+            const fs = JSON.parse(fsRaw);
+            const appsNode = fs?.rt?.children?.apps?.children;
+            const appListNode = appsNode && appsNode["applist.json"];
+
+            if (appListNode && appListNode.content) {
+                try {
+                    JSON.parse(appListNode.content);
+                } catch (error) {
+                    console.warn("Repairing applist.json content in stored filesystem.", error);
+                    appListNode.content = `{
+                "Test": {
+                    "path": "rt/apps/usrApps/test.js"
+                }
+            }`;
+                    localStorage.setItem("filesystem", JSON.stringify(fs));
+                }
+            }
+
+            return fs;
         } catch (error) {
             console.warn("Corrupt filesystem in localStorage, resetting.", error);
             localStorage.removeItem("filesystem");
-            fs = null;
+            fsRaw = null;
         }
     }
 
-    if (fs === null) { // initialize tree
-        fs = {
+    if (fsRaw === null) { // initialize tree
+        const fs = {
             "rt": {
                 type: "dir",
                 group: "sys",
@@ -76,7 +94,7 @@ function loadfs() {
         return fs;
     }
 
-    return JSON.parse(fs);
+    return JSON.parse(fsRaw);
 }
 
 function savefs(fs) {
